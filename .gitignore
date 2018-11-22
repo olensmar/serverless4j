@@ -1,0 +1,14 @@
+*.class
+target
+/bin/
+/.settings/
+.project
+.classpath
+.idea
+
+.serverless
+node_modules
+.idea
+package-lock.json
+
+*.iml
