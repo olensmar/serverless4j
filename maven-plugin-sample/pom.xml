@@ -47,6 +47,10 @@
                 <version>1.0-SNAPSHOT</version>
                 <configuration>
                     <provider>openwhisk</provider>
+                    <providerConfig>
+                        <ApiHost>${openwhisk.apihost}</ApiHost>
+                        <Auth>${openwhisk.auth}</Auth>
+                    </providerConfig>
                 </configuration>
                 <executions>
                     <execution>

@@ -1,33 +1,29 @@
 /**
- Copyright [2018] [Ole Lensmar]
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
+ * Copyright [2018] [Ole Lensmar]
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  **/
 
 package io.nanoservices.serverless.plugins.maven.mojos;
 
 import com.google.common.collect.Sets;
 import io.nanoservices.serverless.plugins.maven.ProviderHandler;
-import io.nanoservices.serverless.plugins.maven.providers.AwsProviderHandler;
-import io.nanoservices.serverless.plugins.maven.providers.OpenWhiskProvider;
 import javassist.ClassPool;
 import javassist.CtClass;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.apache.maven.project.MavenProject;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -41,8 +37,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -51,17 +45,7 @@ import java.util.Set;
     defaultPhase = LifecyclePhase.GENERATE_RESOURCES,
     requiresDependencyResolution = ResolutionScope.RUNTIME,
     threadSafe = true)
-public class GenerateMojo extends AbstractMojo {
-
-    /**
-     * Serverless provider to use - only aws supported for now
-     */
-
-    @Parameter(property = "provider", defaultValue = "aws")
-    private String provider;
-
-    @Parameter(defaultValue = "${project}", readonly = true)
-    private MavenProject project;
+public class GenerateMojo extends BaseMojo {
 
     /**
      * Name of service in generated serverless.ymla
@@ -96,17 +80,6 @@ public class GenerateMojo extends AbstractMojo {
         }
     }
 
-    private ProviderHandler createProviderHandler() {
-        if( "aws".equals( provider)) {
-            return new AwsProviderHandler();
-        }
-        else if( "openwhisk".equals( provider )){
-            return new OpenWhiskProvider();
-        }
-
-        throw new RuntimeException( "Unsupported provider: " + provider);
-    }
-
     private Set<Method> findFunctionHandlers(ProviderHandler providerHandler) throws IOException {
         Path root = new File(project.getBuild().getOutputDirectory()).toPath();
         HandlerFinder handlerFinder = new HandlerFinder(providerHandler);
@@ -123,8 +96,8 @@ public class GenerateMojo extends AbstractMojo {
         options.setPrettyFlow(true);
         Yaml yaml = new Yaml(options);
 
-        if( source != null && source.exists()){
-           data.putAll( yaml.load( new FileInputStream( source )));
+        if (source != null && source.exists()) {
+            data.putAll(yaml.load(new FileInputStream(source)));
         }
 
         data.put("service", service);
@@ -139,23 +112,19 @@ public class GenerateMojo extends AbstractMojo {
 
         Map<String, Object> handlers = data.containsKey("functions") ? (Map<String, Object>) data.get("functions") : new HashMap<>();
         handlerMethods.forEach(e -> {
-            providerHandler.createHandlerConfig( e, handlers, project );
+            providerHandler.createHandlerConfig(e, handlers, project);
         });
 
         data.put("functions", handlers);
-        providerHandler.enhanceConfig( data, project );
+        providerHandler.enhanceConfig(data, project);
 
         File serverless = new File(project.getBuild().getDirectory(), "serverless");
-        if( !serverless.exists()) {
+        if (!serverless.exists()) {
             serverless.mkdir();
         }
 
         yaml.dump(data, new FileWriter(new File(serverless, "serverless.yml")));
-        getLog().info("Created serverless.yml with " + handlers.size() + " function" + ((handlers.size()==1?"":"s")));
-    }
-
-    public static String getArtifactPath(MavenProject project) {
-        return project.getBuild().getDirectory() + File.separatorChar + project.getBuild().getFinalName() + "." + project.getArtifact().getType();
+        getLog().info("Created serverless.yml with " + handlers.size() + " function" + ((handlers.size() == 1 ? "" : "s")));
     }
 
     public String getProvider() {
@@ -183,10 +152,10 @@ public class GenerateMojo extends AbstractMojo {
             try {
                 if (file.getFileName().toString().endsWith(".class")) {
                     CtClass clazz = classPool.makeClass(new FileInputStream(file.toFile()));
-                    handlerMethods.addAll(providerHandler.findFunctions( clazz.toClass()));
+                    handlerMethods.addAll(providerHandler.findFunctions(clazz.toClass()));
                 }
             } catch (Exception e) {
-                throw new IOException( e );
+                throw new IOException(e);
             }
 
             return FileVisitResult.CONTINUE;
