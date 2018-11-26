@@ -6,6 +6,18 @@ The plugin currently:
 * automatically generates the serverless.yml file based on introspection of project code
 * provides wrapper mvn goals for serverless commands
 
+Contents
+* [Installation](#installation)
+* [Usage](#usage)
+* [serverless.yml generation](#serverlessyml-generation)
+  * [AWS](#aws)
+  * [OpenWhisk](#openwhisk)
+* [Goals and configuration properties](#goals-and-configuration-properties)
+  * [serverless:generate](#serverlessgenerate)
+  * [serverless:deploy](#serverlessdeploy)
+  * [serverless:invoke](#serverlessinvoke)
+* [Future Plans](#future-plans)
+
 ## Installation
 
 * Install the serverless framework as described at [Getting started with serverless](https://serverless.com/framework/docs/getting-started/)
@@ -121,7 +133,7 @@ configuration element:
 </plugin>
 ```
  
-## Goals and configuration values
+## Goals and configuration properties
 
 All below goals require the specification of which provider to use, currently "aws" and "openwhisk" are supported.
 
@@ -143,9 +155,9 @@ This is a standalone goal for invoking a deployed function - as shown in the exa
 
 * function (required) - name of the function to invoke, required. 
 
-# Future plans...   
+## Future plans...   
 
-Well, if anyone actually finds this usefull or promising, then future functionality could be to 
+Well, if anyone actually finds this usefull or promising then future functionality could be to 
 * support more providers
 * provide the possibility to verify deployed functions
 * provide an abstraction layer that enables the exact same java code to work on all providers
