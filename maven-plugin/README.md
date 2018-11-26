@@ -41,8 +41,9 @@ with java, it currently:
 ```
 (the plugin currently supports aws and openwhisk providers)
 
-Until there is a non-SNAPSHOT version of the plugin you'll also need to add the sonatype snapshot repository
-to your list of repositories, either in mavens settings.xml or in your project pom.xml
+Until there is a published non-SNAPSHOT version of the plugin available in maven central you'll 
+need to either clone this repo and build it with `mvn clean install`, or add the sonatype snapshot repository
+to your list of repositories, either in mavens settings.xml or in your project pom.xml;
 
 ```
 <pluginRepositories>
