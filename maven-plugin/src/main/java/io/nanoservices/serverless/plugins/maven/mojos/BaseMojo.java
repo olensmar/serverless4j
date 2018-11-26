@@ -18,7 +18,7 @@ public abstract class BaseMojo extends AbstractMojo {
      * Serverless provider to use - aws and openwhisk supported for now
      */
 
-    @Parameter(property = "provider", defaultValue = "aws")
+    @Parameter(property = "provider", required = true)
     protected String provider;
 
     @Parameter(defaultValue = "${project}", readonly = true)
@@ -41,6 +41,6 @@ public abstract class BaseMojo extends AbstractMojo {
             return new OpenWhiskProvider(providerConfig);
         }
 
-        throw new RuntimeException("Unsupported provider: " + provider);
+        throw new RuntimeException("Unsupported Serverless provider: " + provider);
     }
 }
