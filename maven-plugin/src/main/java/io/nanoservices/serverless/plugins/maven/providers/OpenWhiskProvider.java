@@ -55,7 +55,9 @@ public class OpenWhiskProvider implements ProviderHandler {
     }
 
     private boolean isOpenWhiskActionMethod(Method mainMethod) {
-        return mainMethod.getReturnType().equals(JsonObject.class) && ((mainMethod.getModifiers() & Modifier.STATIC) != 0);
+        return mainMethod.getReturnType().equals(JsonObject.class) &&
+            ((mainMethod.getModifiers() & Modifier.STATIC) != 0) &&
+            ((mainMethod.getModifiers() & Modifier.PUBLIC) != 0);
     }
 
     @Override

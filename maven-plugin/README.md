@@ -1,15 +1,10 @@
 # Serverless Maven Plugin
 
-A maven plugin for making it (a little) easier to use the [serverless](https://serverless.com) framework with java. 
+A maven plugin for making it (a little) easier to use the [serverless](https://serverless.com) framework with java.
+ 
 The plugin currently:
 * automatically generates the serverless.yml file based on introspection of project code
 * provides wrapper mvn goals for serverless commands
-
-Future functionality could be to 
-* support more providers
-* provide the possibility to verify deployed functions
-* provide an abstraction layer that enables the exact same java code to work on all providers
-* <whatever you come up with!>
 
 ## Installation
 
@@ -33,10 +28,10 @@ Future functionality could be to
     </executions>
 </plugin>
 ```
-The plugin currently supports aws and openwhisk providers.
+(the plugin currently supports aws and openwhisk providers)
 
 Until there is a non-SNAPSHOT version of the plugin you'll also need to add the sonatype snapshot repository
-to your list of repositories:
+to your list of repositories, either in mavens settings.xml or in your project pom.xml
 
 ```
 <pluginRepositories>
@@ -54,7 +49,7 @@ to your list of repositories:
 
 Once configured as above you can create serverless functions/handlers in accordance with your target providers 
  platform and build your project; the plugin will generate a serverless.yml file for your selected provider into the 
- target/serverless folder during your build. Provided you've configured serverless for your provider you can use 
+ target/serverless folder during your build. Provided you've configured serverless for your provider you can then use 
  
 ```
 mvn serverless:deploy
@@ -69,8 +64,11 @@ If you want to invoke one of the deployed functions you can use
 mvn serverless:invoke -Dfunction=<functionName>
 ```
  
-Depending on which provider you've specified in the plugin configuration, handlers are added to serverless.yml 
-as described below.
+## serverless.yml generation
+
+For now the plugin will generate the provider, service, package and functions properties; depending on which 
+provider you've specified in the plugin configuration, function handlers are extracted from your classes and added 
+to serverless.yml as described below.
 
 ### AWS
 
@@ -145,5 +143,11 @@ This is a standalone goal for invoking a deployed function - as shown in the exa
 
 * function (required) - name of the function to invoke, required. 
 
- 
+# Future plans...   
+
+Well, if anyone actually finds this usefull or promising, then future functionality could be to 
+* support more providers
+* provide the possibility to verify deployed functions
+* provide an abstraction layer that enables the exact same java code to work on all providers
+* <whatever you come up with!>
 

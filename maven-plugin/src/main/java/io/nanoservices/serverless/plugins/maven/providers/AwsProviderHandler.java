@@ -18,6 +18,7 @@ package io.nanoservices.serverless.plugins.maven.providers;
 
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import io.nanoservices.serverless.annotations.Function;
 import io.nanoservices.serverless.plugins.maven.ProviderHandler;
@@ -25,6 +26,7 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.maven.project.MavenProject;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -40,6 +42,14 @@ public class AwsProviderHandler implements ProviderHandler {
     public AwsProviderHandler(Map params) {
         this.params = params;
     }
+
+    /**
+     * Finds methods that comply with the RequestHandler / RequestStreamHandler interfaces or have the
+     * Function annotation
+     *
+     * @param aClass the class possibly containing function handlers
+     * @return a list of found methods
+     */
 
     @Override
     public Collection<Method> findFunctions(Class aClass) {
@@ -57,7 +67,10 @@ public class AwsProviderHandler implements ProviderHandler {
             return methods;
         }
 
-        return Arrays.asList(MethodUtils.getMethodsWithAnnotation(aClass, Function.class));
+        return
+            Collections2.filter(
+                Arrays.asList(MethodUtils.getMethodsWithAnnotation(aClass, Function.class)),
+                method -> ((method.getModifiers() & Modifier.STATIC) == 0) && ((method.getModifiers() & Modifier.PUBLIC) != 0));
     }
 
     @Override
