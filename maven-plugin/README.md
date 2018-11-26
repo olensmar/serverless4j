@@ -82,7 +82,7 @@ When targeting AWS use the string "aws" for the provider; the plugin will look f
 and add these to the generated serverless.yml file accordingly.
 
 See the [AWS Sample](../maven-plugin-sample/src/main/java/io/nanoservices/samples/aws) package and containing 
-[Plugin Sample project](../maven-plugin-sample/README.md) for a concrete example.
+[Plugin Sample project](../maven-plugin-sample) for a concrete example.
 
 ### OpenWhisk
 
@@ -95,7 +95,7 @@ and add them as handlers to the generated serverless.yml file. Use the
 (otherwise it will be named with the class name).   
 
 See the [OpenWhisk Sample](../maven-plugin-sample/src/main/java/io/nanoservices/samples/openwhisk) pacakge and containing 
-[Plugin Sample project](../maven-plugin-sample/README.md) for a concrete example.
+[Plugin Sample project](../maven-plugin-sample) for a concrete example.
 
 If you want to specify the OW_APIHOST and OW_AUTH values directly in the pom you can do so using the providerParams
 configuration element:

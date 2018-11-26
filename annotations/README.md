@@ -31,5 +31,5 @@ public class HelloWorldHandler {
 }
 ```
 
-Read more about usage for the [Maven Plugin](../maven-plugin/README.md)
+Read more about usage for the [Maven Plugin](../maven-plugin)
 
