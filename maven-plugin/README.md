@@ -5,7 +5,7 @@ with java, it currently:
 * automatically generates the serverless.yml file based on introspection of project code
 * provides wrapper mvn goals for serverless commands
 
-##### Contents
+#### Contents
 * [Installation](#installation)
 * [Usage](#usage)
 * [serverless.yml generation](#serverlessyml-generation)
