@@ -1,12 +1,11 @@
 # Serverless Maven Plugin
 
-A maven plugin for making it (a little) easier to use the [serverless](https://serverless.com) framework with java.
- 
-The plugin currently:
+A maven plugin for making it (a little) easier to use the [serverless](https://serverless.com) framework 
+with java, it currently:
 * automatically generates the serverless.yml file based on introspection of project code
 * provides wrapper mvn goals for serverless commands
 
-Contents
+##### Contents
 * [Installation](#installation)
 * [Usage](#usage)
 * [serverless.yml generation](#serverlessyml-generation)
@@ -157,9 +156,11 @@ This is a standalone goal for invoking a deployed function - as shown in the exa
 
 ## Future plans...   
 
-Well, if anyone actually finds this usefull or promising then future functionality could be to 
+Well, if anyone actually finds this useful or promising then future functionality could be to 
 * support more providers
 * provide the possibility to verify deployed functions
 * provide an abstraction layer that enables the exact same java code to work on all providers
 * <whatever you come up with!>
+
+Please open issues accordingly!
 
