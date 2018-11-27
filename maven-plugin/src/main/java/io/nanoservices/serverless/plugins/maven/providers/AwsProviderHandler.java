@@ -16,9 +16,10 @@
 
 package io.nanoservices.serverless.plugins.maven.providers;
 
+import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
-import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import io.nanoservices.serverless.annotations.Function;
 import io.nanoservices.serverless.plugins.maven.ProviderHandler;
@@ -28,10 +29,11 @@ import org.apache.maven.project.MavenProject;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ProviderHandler for AWS
@@ -52,35 +54,57 @@ public class AwsProviderHandler implements ProviderHandler {
      */
 
     @Override
-    public Collection<Method> findFunctions(Class aClass) {
+    public List<Method> findFunctions(Class aClass) {
+
+        List<Method> methods = Lists.newArrayList();
 
         Set<Class> interfaces = Sets.newHashSet(aClass.getInterfaces());
-        if (interfaces.contains(RequestHandler.class) || interfaces.contains(RequestStreamHandler.class)) {
-            Set<Method> methods = Sets.newHashSet();
+        if (interfaces.contains(RequestHandler.class)) {
 
-            for (Method m : aClass.getMethods()) {
-                if (m.getName().equals("handleRequest")) {
+            for (Method m : aClass.getDeclaredMethods()) {
+                if (isHandleRequestMethod(m)) {
                     methods.add(m);
+                    break;
                 }
             }
+        }
 
+        if (interfaces.contains(RequestStreamHandler.class)) {
+            for (Method m : aClass.getDeclaredMethods()) {
+                if (isStreamHandleRequestMethod(m)) {
+                    methods.add(m);
+                    break;
+                }
+            }
+        }
+
+        if (!methods.isEmpty()) {
             return methods;
         }
 
-        return
-            Collections2.filter(
-                Arrays.asList(MethodUtils.getMethodsWithAnnotation(aClass, Function.class)),
-                method -> ((method.getModifiers() & Modifier.STATIC) == 0) && ((method.getModifiers() & Modifier.PUBLIC) != 0));
+        List<Method> methodList = Arrays.asList(MethodUtils.getMethodsWithAnnotation(aClass, Function.class));
+        return methodList.stream().filter(
+            method -> ((method.getModifiers() & Modifier.STATIC) == 0) && ((method.getModifiers() & Modifier.PUBLIC) != 0)).collect(Collectors.toList());
+    }
+
+    private boolean isStreamHandleRequestMethod(Method m) {
+        return m.getName().equals("handleRequest") && m.getParameterCount() == 3 &&
+            m.getParameterTypes()[2].equals(Context.class);
+    }
+
+    private boolean isHandleRequestMethod(Method method) {
+        return method.getName().equals("handleRequest") && method.getParameterCount() == 2 &&
+            method.getParameterTypes()[1].equals(Context.class);
     }
 
     @Override
     public void createHandlerConfig(Method method, Map<String, Object> handlers, MavenProject project) {
         Function annotation = method.getAnnotation(Function.class);
         String name = annotation != null && !annotation.value().isEmpty() ? annotation.value() : method.getName();
-
         Set<Class> interfaces = Sets.newHashSet(method.getDeclaringClass().getInterfaces());
 
-        if (interfaces.contains(RequestHandler.class) || interfaces.contains(RequestStreamHandler.class)) {
+        if ((interfaces.contains(RequestHandler.class) && isHandleRequestMethod(method)) ||
+            (interfaces.contains(RequestStreamHandler.class) && isStreamHandleRequestMethod(method))) {
             handlers.put(name, new HashMap<String, String>() {{
                 put("handler", method.getDeclaringClass().getName());
             }});

@@ -19,7 +19,7 @@ package io.nanoservices.serverless.plugins.maven;
 import org.apache.maven.project.MavenProject;
 
 import java.lang.reflect.Method;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,7 +35,7 @@ public interface ProviderHandler {
      * @return a list of found handlers, an empty list must be returned if no handlers are found
      */
 
-    Collection<Method> findFunctions(Class aClass);
+    List<Method> findFunctions(Class aClass);
 
     /**
      * Create the corresponding YAML handler entry in serverless.yml for the specified method that was previously returned

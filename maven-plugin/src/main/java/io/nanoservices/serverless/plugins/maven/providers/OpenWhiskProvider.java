@@ -27,7 +27,6 @@ import org.apache.maven.project.MavenProject;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +42,7 @@ public class OpenWhiskProvider implements ProviderHandler {
     }
 
     @Override
-    public Collection<Method> findFunctions(Class aClass) {
+    public List<Method> findFunctions(Class aClass) {
         ArrayList<Method> result = Lists.newArrayList();
 
         Method mainMethod = MethodUtils.getMatchingAccessibleMethod(aClass, "main", JsonObject.class);

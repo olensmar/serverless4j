@@ -16,7 +16,7 @@
 
 package io.nanoservices.serverless.plugins.maven.mojos;
 
-import com.google.common.collect.Sets;
+import com.google.common.collect.Lists;
 import io.nanoservices.serverless.plugins.maven.ProviderHandler;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -38,8 +38,8 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Mojo(name = "generate",
     defaultPhase = LifecyclePhase.GENERATE_RESOURCES,
@@ -70,7 +70,7 @@ public class GenerateMojo extends BaseMojo {
         try {
             ProviderHandler providerHandler = createProviderHandler();
 
-            Set<Method> handlers = findFunctionHandlers(providerHandler);
+            List<Method> handlers = findFunctionHandlers(providerHandler);
             getLog().debug("Found " + handlers.size() + " Function handlers");
             if (!handlers.isEmpty()) {
                 createServerlessYml(handlers, providerHandler);
@@ -80,7 +80,7 @@ public class GenerateMojo extends BaseMojo {
         }
     }
 
-    private Set<Method> findFunctionHandlers(ProviderHandler providerHandler) throws IOException {
+    private List<Method> findFunctionHandlers(ProviderHandler providerHandler) throws IOException {
         Path root = new File(project.getBuild().getOutputDirectory()).toPath();
         HandlerFinder handlerFinder = new HandlerFinder(providerHandler);
         Files.walkFileTree(root, handlerFinder);
@@ -88,7 +88,7 @@ public class GenerateMojo extends BaseMojo {
         return handlerFinder.handlerMethods;
     }
 
-    private void createServerlessYml(Set<Method> handlerMethods, ProviderHandler providerHandler) throws IOException {
+    private void createServerlessYml(List<Method> handlerMethods, ProviderHandler providerHandler) throws IOException {
         Map<String, Object> data = new HashMap<>();
 
         DumperOptions options = new DumperOptions();
@@ -139,7 +139,7 @@ public class GenerateMojo extends BaseMojo {
 
         private final ProviderHandler providerHandler;
         private ClassPool classPool = ClassPool.getDefault();
-        private Set<Method> handlerMethods = Sets.newHashSet();
+        private List<Method> handlerMethods = Lists.newArrayList();
 
         public HandlerFinder(ProviderHandler providerHandler) {
 
