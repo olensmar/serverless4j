@@ -14,23 +14,16 @@
  * limitations under the License.
  **/
 
-package io.nanoservices.serverless.plugins.maven.providers;
+package io.nanoservices.serverless.plugins.maven.providers.openwhisk;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.google.gson.JsonObject;
 import io.nanoservices.serverless.annotations.Function;
 
-import java.util.Map;
-
-/**
- * Simple AWS RequestHandler to illustrate automatic packaging and deployment
- */
-
-public class AwsRequestHandler implements RequestHandler<Map<String, Object>, String> {
-
-    @Override
-    @Function("helloWorldHandler")
-    public String handleRequest(Map<String, Object> input, Context context) {
-        return "Hello " + input.get("name");
+public class IncorrectOpenWhiskHelloWorldHandler1 {
+    @Function("HelloWorld")
+    public JsonObject main(JsonObject args) {
+        JsonObject response = new JsonObject();
+        response.addProperty("greetings", "Hello world!");
+        return response;
     }
 }

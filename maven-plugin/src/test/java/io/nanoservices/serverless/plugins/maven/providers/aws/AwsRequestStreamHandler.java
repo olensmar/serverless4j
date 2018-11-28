@@ -14,29 +14,21 @@
  * limitations under the License.
  **/
 
-package io.nanoservices.serverless.plugins.maven.providers;
+package io.nanoservices.serverless.plugins.maven.providers.aws;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import io.nanoservices.serverless.annotations.Function;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Map;
 
 /**
  * Simple AWS RequestHandler to illustrate automatic packaging and deployment
  */
 
-public class AwsRequestAndRequestStreamHandler implements RequestHandler<Map<String, Object>, String>, RequestStreamHandler {
-
-    @Override
-    @Function("helloWorldHandler")
-    public String handleRequest(Map<String, Object> input, Context context) {
-        return "Hello " + input.get("name");
-    }
+public class AwsRequestStreamHandler implements RequestStreamHandler {
 
     @Override
     @Function("helloWorldStreamHandler")

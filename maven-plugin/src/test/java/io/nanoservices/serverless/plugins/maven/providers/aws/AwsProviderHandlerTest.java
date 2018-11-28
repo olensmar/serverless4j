@@ -1,6 +1,7 @@
-package io.nanoservices.serverless.plugins.maven.providers;
+package io.nanoservices.serverless.plugins.maven.providers.aws;
 
 import com.google.common.collect.Maps;
+import io.nanoservices.serverless.plugins.maven.providers.AwsProviderHandler;
 import org.apache.maven.project.MavenProject;
 import org.junit.jupiter.api.Test;
 
@@ -49,19 +50,19 @@ public class AwsProviderHandlerTest {
 
         providerHandler.createHandlerConfig(providerHandler.findFunctions(AwsHandler.class).get(0), config, mock(MavenProject.class));
         assertNotNull(config.get("sayHelloWorld"));
-        assertEquals("io.nanoservices.serverless.plugins.maven.providers.AwsHandler::sayHelloWorld",
+        assertEquals("io.nanoservices.serverless.plugins.maven.providers.aws.AwsHandler::sayHelloWorld",
             ((Map<String, Object>) config.get("sayHelloWorld")).get("handler"));
 
         config.clear();
         providerHandler.createHandlerConfig(providerHandler.findFunctions(AwsRequestHandler.class).get(0), config, mock(MavenProject.class));
         assertNotNull(config.get("helloWorldHandler"));
-        assertEquals("io.nanoservices.serverless.plugins.maven.providers.AwsRequestHandler",
+        assertEquals("io.nanoservices.serverless.plugins.maven.providers.aws.AwsRequestHandler",
             ((Map<String, Object>) config.get("helloWorldHandler")).get("handler"));
 
         config.clear();
         providerHandler.createHandlerConfig(providerHandler.findFunctions(AwsRequestStreamHandler.class).get(0), config, mock(MavenProject.class));
         assertNotNull(config.get("helloWorldStreamHandler"));
-        assertEquals("io.nanoservices.serverless.plugins.maven.providers.AwsRequestStreamHandler",
+        assertEquals("io.nanoservices.serverless.plugins.maven.providers.aws.AwsRequestStreamHandler",
             ((Map<String, Object>) config.get("helloWorldStreamHandler")).get("handler"));
 
         config.clear();
@@ -70,11 +71,11 @@ public class AwsProviderHandlerTest {
         providerHandler.createHandlerConfig(functions.get(1), config, mock(MavenProject.class));
 
         assertNotNull(config.get("helloWorldHandler"));
-        assertEquals("io.nanoservices.serverless.plugins.maven.providers.AwsRequestAndRequestStreamHandler",
+        assertEquals("io.nanoservices.serverless.plugins.maven.providers.aws.AwsRequestAndRequestStreamHandler",
             ((Map<String, Object>) config.get("helloWorldHandler")).get("handler"));
 
         assertNotNull(config.get("helloWorldStreamHandler"));
-        assertEquals("io.nanoservices.serverless.plugins.maven.providers.AwsRequestAndRequestStreamHandler",
+        assertEquals("io.nanoservices.serverless.plugins.maven.providers.aws.AwsRequestAndRequestStreamHandler",
             ((Map<String, Object>) config.get("helloWorldStreamHandler")).get("handler"));
     }
 }

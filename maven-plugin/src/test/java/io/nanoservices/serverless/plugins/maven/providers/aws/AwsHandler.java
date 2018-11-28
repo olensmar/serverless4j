@@ -1,4 +1,4 @@
-package io.nanoservices.serverless.plugins.maven.providers;
+package io.nanoservices.serverless.plugins.maven.providers.aws;
 
 import io.nanoservices.serverless.annotations.Function;
 

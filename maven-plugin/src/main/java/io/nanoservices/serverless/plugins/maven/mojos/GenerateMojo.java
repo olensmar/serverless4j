@@ -127,14 +127,6 @@ public class GenerateMojo extends BaseMojo {
         getLog().info("Created serverless.yml with " + handlers.size() + " function" + ((handlers.size() == 1 ? "" : "s")));
     }
 
-    public String getProvider() {
-        return provider;
-    }
-
-    public void setProvider(String provider) {
-        this.provider = provider;
-    }
-
     private class HandlerFinder extends SimpleFileVisitor<Path> {
 
         private final ProviderHandler providerHandler;

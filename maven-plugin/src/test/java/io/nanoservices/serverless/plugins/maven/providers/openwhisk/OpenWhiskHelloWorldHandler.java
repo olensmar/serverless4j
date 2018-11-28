@@ -14,25 +14,19 @@
  * limitations under the License.
  **/
 
-package io.nanoservices.serverless.plugins.maven.providers;
+package io.nanoservices.serverless.plugins.maven.providers.openwhisk;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
+import com.google.gson.JsonObject;
 import io.nanoservices.serverless.annotations.Function;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 /**
- * Simple AWS RequestHandler to illustrate automatic packaging and deployment
+ * Simple OpenWhisk app to illustrate automated packaging for OpenWhisk
  */
-
-public class AwsRequestStreamHandler implements RequestStreamHandler {
-
-    @Override
-    @Function("helloWorldStreamHandler")
-    public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
-
+public class OpenWhiskHelloWorldHandler {
+    @Function("HelloWorld")
+    public static JsonObject main(JsonObject args) {
+        JsonObject response = new JsonObject();
+        response.addProperty("greetings", "Hello world!");
+        return response;
     }
 }
