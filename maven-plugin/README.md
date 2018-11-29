@@ -160,7 +160,7 @@ This is a standalone goal for invoking a deployed function - as shown in the exa
 ### `serverless:verify`
 
 Verifies the existence of deployed functions and optionally their return value when invoked. 
-For example adding following configuration:
+For example adding the following configuration:
 ```
 <build>
     <plugins>
@@ -208,6 +208,9 @@ you can also specify
 * debug - will write all output to the mvn output log
 * timeout - overrides the default invocation timeout of 60 seconds - be aware that this is strictly 
 speaking the timeout of the entire "serverless invoke" process and not just the function itself.
+
+If function execution fails, the return value doesn't match the expected, or the timeout is exceeded the 
+plugin will fail that invocation (but not the entire build) and output corresponding diagnostic info.
 
 You could of course bind verification to the `mvn verify` command with 
 
