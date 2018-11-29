@@ -4,7 +4,7 @@ A maven plugin for making it (a little) easier to use the [serverless](https://s
 with java, it currently:
 * automatically generates the serverless.yml file based on introspection of project code
 * provides wrapper mvn goals for serverless commands
-* provides the possibility to verify deployed function
+* provides the possibility to verify deployed functions
 
 #### Contents
 * [Installation](#installation)
