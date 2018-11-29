@@ -160,7 +160,7 @@ This is a standalone goal for invoking a deployed function - as shown in the exa
 ### `serverless:verify`
 
 Verifies the existence of deployed functions and optionally their return value when invoked. 
-For example the following configuration:
+For example adding following configuration:
 ```
 <build>
     <plugins>
@@ -185,20 +185,18 @@ For example the following configuration:
             </configuration>
             <executions>
                 <execution>
-                    <id>generate</id>
                     <phase>process-classes</phase>
                     <goals>
                         <goal>generate</goal>
                     </goals>
                 </execution>
-                
             </executions>
         </plugin>
     </plugins>
 </build>
 ```
 
-Now running 
+and running 
 
 ```
 mvn serverless:verify
@@ -211,8 +209,7 @@ you can also specify
 * timeout - overrides the default invocation timeout of 60 seconds - be aware that this is strictly 
 speaking the timeout of the entire "serverless invoke" process and not just the function itself.
 
-You could of course bind verification to the `mvn verify` command with - but you'd have to make sure your functions 
-get deployed before verifying (perhaps by binding serverless:deploy to the same build phase)
+You could of course bind verification to the `mvn verify` command with 
 
 ```
 ...
@@ -225,6 +222,9 @@ get deployed before verifying (perhaps by binding serverless:deploy to the same 
             </execution>```
 ...
 ```
+
+but you'd have to make sure your functions get deployed before verifying 
+(perhaps by binding serverless:deploy to the same build phase)
 
 ## Future plans...   
 
