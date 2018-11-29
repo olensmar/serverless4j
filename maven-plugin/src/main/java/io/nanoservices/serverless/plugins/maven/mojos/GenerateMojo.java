@@ -41,6 +41,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Maven goal for generating serverless.yml files from code
+ */
+
 @Mojo(name = "generate",
     defaultPhase = LifecyclePhase.GENERATE_RESOURCES,
     requiresDependencyResolution = ResolutionScope.RUNTIME,

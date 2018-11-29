@@ -21,6 +21,11 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Maven goal for invoking "serverless deploy" for a generated serverless.yml file
+ */
 
 @Mojo(name = "deploy",
     defaultPhase = LifecyclePhase.DEPLOY,
@@ -43,7 +48,7 @@ public class DeployMojo extends BaseMojo {
             createProviderHandler().beforeServerlessCli(builder);
 
             Process process = builder.start();
-            process.waitFor();
+            process.waitFor(60, TimeUnit.SECONDS);
         } catch (Exception e) {
             e.printStackTrace();
         }

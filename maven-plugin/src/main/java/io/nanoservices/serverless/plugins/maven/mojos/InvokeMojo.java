@@ -22,6 +22,11 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Maven goal for invoking a deployed serverless function using "serverless invoke"
+ */
 
 @Mojo(name = "invoke",
     defaultPhase = LifecyclePhase.DEPLOY,
@@ -48,7 +53,8 @@ public class InvokeMojo extends BaseMojo {
             createProviderHandler().beforeServerlessCli(builder);
 
             Process process = builder.start();
-            process.waitFor();
+            process.waitFor(60, TimeUnit.SECONDS);
+            getLog().debug("Process exited with exitValue " + process.exitValue());
         } catch (Exception e) {
             e.printStackTrace();
         }

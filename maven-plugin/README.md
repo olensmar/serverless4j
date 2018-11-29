@@ -4,6 +4,7 @@ A maven plugin for making it (a little) easier to use the [serverless](https://s
 with java, it currently:
 * automatically generates the serverless.yml file based on introspection of project code
 * provides wrapper mvn goals for serverless commands
+* provides the possibility to verify deployed function
 
 #### Contents
 * [Installation](#installation)
@@ -15,6 +16,7 @@ with java, it currently:
   * [serverless:generate](#serverlessgenerate)
   * [serverless:deploy](#serverlessdeploy)
   * [serverless:invoke](#serverlessinvoke)
+  * [serverless:verify](#serverlessverify)
 * [Future Plans](#future-plans)
 
 ## Installation
@@ -155,11 +157,79 @@ This is a standalone goal for invoking a deployed function - as shown in the exa
 
 * `function` (required) - name of the function to invoke. 
 
+### `serverless:verify`
+
+Verifies the existence of deployed functions and optionally their return value when invoked. 
+For example the following configuration:
+```
+<build>
+    <plugins>
+        <plugin>
+            <groupId>io.nanoservices</groupId>
+            <artifactId>serverless-maven-plugin</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <configuration>
+                <provider>aws</provider>
+                <verify>
+                    <function>
+                        <name>sayHello</name>
+                        <input>{"name":"Joe"}</input>
+                        <expect>"Hello Joe"</expect>
+                        <debug>true</debug>
+                    </function>
+                    <function>
+                        <name>sayHelloWorld</name>
+                        <timeout>5</timeout>
+                    </function>
+                </verify>
+            </configuration>
+            <executions>
+                <execution>
+                    <id>generate</id>
+                    <phase>process-classes</phase>
+                    <goals>
+                        <goal>generate</goal>
+                    </goals>
+                </execution>
+                
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+```
+
+Now running 
+
+```
+mvn serverless:verify
+```
+
+will invoke the functions `sayHelloWorld` and `sayHello`, the latter will be invoked 
+with the specified JSON input and checked for the expected return value. Apart from name, input and expect 
+you can also specify
+* debug - will write all output to the mvn output log
+* timeout - overrides the default invocation timeout of 60 seconds - be aware that this is strictly 
+speaking the timeout of the entire "serverless invoke" process and not just the function itself.
+
+You could of course bind verification to the `mvn verify` command with - but you'd have to make sure your functions 
+get deployed before verifying (perhaps by binding serverless:deploy to the same build phase)
+
+```
+...
+            <execution>
+                <id>verify</id>
+                <phase>verify</phase>
+                <goals>
+                    <goal>verify</goal>
+                </goals>
+            </execution>```
+...
+```
+
 ## Future plans...   
 
 If anyone actually finds this useful or promising then future functionality could be to 
 * support more providers
-* provide the possibility to verify deployed functions
 * provide an abstraction layer that enables the exact same java code to work on all providers
 * <whatever you come up with!>
 

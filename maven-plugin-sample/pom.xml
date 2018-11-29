@@ -47,6 +47,17 @@
                 <version>1.0-SNAPSHOT</version>
                 <configuration>
                     <provider>aws</provider>
+                    <verify>
+                        <function>
+                            <name>sayHello</name>
+                            <input>{"name":"Joe"}</input>
+                            <expect>"Hello Joe"</expect>
+                            <debug>true</debug>
+                        </function>
+                        <function>
+                            <name>sayHelloWorld</name>
+                        </function>
+                    </verify>
                 </configuration>
                 <executions>
                     <execution>
