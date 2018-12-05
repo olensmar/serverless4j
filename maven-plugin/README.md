@@ -47,7 +47,7 @@ with java, it currently:
 
 Once configured as above you can create serverless functions/handlers in accordance with your target providers 
  platform and build your project; the plugin will generate a serverless.yml file for your selected provider into the 
- target/serverless folder during your build. Provided you've configured serverless for your provider you can then use 
+ `target/serverless` folder during your build. Provided you've configured serverless for your provider you can then use 
  
 ```
 mvn serverless:deploy
