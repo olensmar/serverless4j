@@ -4,7 +4,7 @@
     <groupId>io.nanoservices</groupId>
     <artifactId>serverless4j</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-alpha-1</version>
 
     <name>serverless4j</name>
     <description>A collection of libraries and tools for serverless development in java</description>
@@ -57,7 +57,7 @@
                 <configuration>
                     <serverId>ossrh</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
                 </configuration>
             </plugin>
         </plugins>

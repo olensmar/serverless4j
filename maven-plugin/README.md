@@ -27,7 +27,7 @@ with java, it currently:
 <plugin>
     <groupId>io.nanoservices</groupId>
     <artifactId>serverless-maven-plugin</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-alpha-1</version>
     <configuration>
         <provider>aws</provider>
     </configuration>
@@ -42,22 +42,6 @@ with java, it currently:
 </plugin>
 ```
 (the plugin currently supports aws and openwhisk providers)
-
-Until there is a published non-SNAPSHOT version of the plugin available in maven central you'll 
-need to either clone this repo and build it with `mvn clean install`, or add the sonatype snapshot repository
-to your list of repositories, either in mavens settings.xml or in your project pom.xml;
-
-```
-<pluginRepositories>
-    <pluginRepository>
-        <id>sonatype-snapshots</id>
-        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        <snapshots>
-            <enabled>true</enabled>
-        </snapshots>
-    </pluginRepository>
-</pluginRepositories>
-```
 
 ## Usage
 
@@ -96,6 +80,24 @@ and add these to the generated serverless.yml file accordingly.
 See the [AWS Sample](../maven-plugin-sample/src/main/java/io/nanoservices/samples/aws) package and containing 
 [Plugin Sample project](../maven-plugin-sample) for a concrete example.
 
+If you need to specify a target region or stage add these to a providerConfig section in your plugin configuration:
+
+```
+<plugin>
+    <groupId>io.nanoservices</groupId>
+    <artifactId>serverless-maven-plugin</artifactId>
+    <version>1.0-alpha-1</version>
+    <configuration>
+        <provider>aws</provider>
+        <providerConfig>
+           <region>us-west-2</region>
+           <stage>beta</stage>
+        </providerConfig>
+    </configuration>
+    ...
+</plugin>
+```
+
 ### OpenWhisk
 
 When targeting OpenWhisk use the string "openwhisk" for the provider; the plugin will extract 
@@ -109,14 +111,14 @@ and add them as handlers to the generated serverless.yml file. As with AWS you c
 See the [OpenWhisk Sample](../maven-plugin-sample/src/main/java/io/nanoservices/samples/openwhisk) pacakge and containing 
 [Plugin Sample project](../maven-plugin-sample) for a concrete example.
 
-If you want to specify the OW_APIHOST and OW_AUTH values directly in the pom you can do so using the providerParams
+If you want to specify the OpenWhisk OW_APIHOST and OW_AUTH values directly in the pom you can do so using the providerConfig
 configuration element:
 
 ```
 <plugin>
     <groupId>io.nanoservices</groupId>
     <artifactId>serverless-maven-plugin</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-alpha-1</version>
     <configuration>
         <provider>openwhisk</provider>
         <providerConfig>
@@ -124,14 +126,7 @@ configuration element:
            <Auth>...</Auth>
         </providerConfig>
     </configuration>
-    <executions>
-        <execution>
-            <phase>process-classes</phase>
-            <goals>
-                <goal>generate</goal>
-            </goals>
-        </execution>
-    </executions>
+    ...
 </plugin>
 ```
  
@@ -167,7 +162,7 @@ For example adding the following configuration:
         <plugin>
             <groupId>io.nanoservices</groupId>
             <artifactId>serverless-maven-plugin</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0-alpha-1</version>
             <configuration>
                 <provider>aws</provider>
                 <verify>

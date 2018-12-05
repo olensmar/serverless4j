@@ -26,7 +26,7 @@ and AUTH values to the config as shown in the example below:
 <plugin>
     <groupId>io.nanoservices</groupId>
     <artifactId>serverless-maven-plugin</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-alpha-1</version>
     <configuration>
         <provider>openwhisk</provider>
         <providerConfig>

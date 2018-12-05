@@ -39,10 +39,10 @@ import java.util.stream.Collectors;
  * ProviderHandler for AWS
  */
 public class AwsProviderHandler implements ProviderHandler {
-    private final Map params;
+    private final Map awsParams;
 
     public AwsProviderHandler(Map params) {
-        this.params = params;
+        this.awsParams = params;
     }
 
     /**
@@ -123,6 +123,11 @@ public class AwsProviderHandler implements ProviderHandler {
 
     @Override
     public void beforeServerlessCli(ProcessBuilder builder) {
-
+        if (awsParams.containsKey("stage")) {
+            builder.command().addAll(Arrays.asList("--stage", String.valueOf(awsParams.get("stage"))));
+        }
+        if (awsParams.containsKey("region")) {
+            builder.command().addAll(Arrays.asList("--region", String.valueOf(awsParams.get("region"))));
+        }
     }
 }

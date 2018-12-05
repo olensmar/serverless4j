@@ -4,14 +4,18 @@
     <parent>
         <groupId>io.nanoservices</groupId>
         <artifactId>serverless4j</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0-alpha-1</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.nanoservices</groupId>
     <artifactId>serverless-annotations</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+
+    <name>Serverless Annotations</name>
+    <description>A set of java annotations for adding serverless-related metadata to java code</description>
+    <url>https://github.com/olensmar/serverless4j/tree/master/annotations</url>
+
     <build>
         <plugins>
             <plugin>
@@ -25,6 +29,4 @@
             </plugin>
         </plugins>
     </build>
-    <name>Serverless Annotations</name>
-    <url>http://maven.apache.org</url>
 </project>
