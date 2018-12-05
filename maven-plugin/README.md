@@ -64,7 +64,7 @@ mvn serverless:invoke -Dfunction=<functionName>
  
 ## serverless.yml generation
 
-For now the plugin will generate the provider, service, package and functions properties; depending on which 
+For now the plugin will generate the `provider`, `service`, `package` and `functions` properties; depending on which 
 provider you've specified in the plugin configuration, function handlers are extracted from your classes and added 
 to serverless.yml as described below.
 
