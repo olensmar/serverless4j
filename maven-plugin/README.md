@@ -23,7 +23,8 @@ with java, it currently:
 
 * Install the serverless framework as described at [Getting started with serverless](https://serverless.com/framework/docs/getting-started/)
 * Add the plugin to your pom under the build/plugins section:
-```
+
+```xml
 <plugin>
     <groupId>io.nanoservices</groupId>
     <artifactId>serverless-maven-plugin</artifactId>
@@ -53,7 +54,7 @@ Once configured as above you can create serverless functions/handlers in accorda
 mvn serverless:deploy
 ```
 
-to deploy the generated artifact to your target platform (this simply runs the corresponding serverless deploy 
+to deploy the generated artifact to your target platform (this simply runs the corresponding `serverless deploy` 
 for the generated serverless.yml).
 
 If you want to invoke one of the deployed functions you can use
@@ -67,6 +68,22 @@ mvn serverless:invoke -Dfunction=<functionName>
 For now the plugin will generate the `provider`, `service`, `package` and `functions` properties; depending on which 
 provider you've specified in the plugin configuration, function handlers are extracted from your classes and added 
 to serverless.yml as described below.
+
+The `Function` annotation can be used to override the name of the handler in the functions section - 
+for example using the following with the aws provider
+
+```java
+public class HelloWorldHandler {
+    
+    @Function("sayHelloWorld")
+    public String aReallyConfusingMethodName() {
+        return "Hello world!";
+    }
+}
+
+```
+
+Would deploy a handler named "sayHelloWorld" and map it to the "aReallyConfusingMethodName" method.
 
 ### AWS
 
@@ -82,7 +99,7 @@ See the [AWS Sample](../maven-plugin-sample/src/main/java/io/nanoservices/sample
 
 If you need to specify a target region or stage add these to a providerConfig section in your plugin configuration:
 
-```
+```xml
 <plugin>
     <groupId>io.nanoservices</groupId>
     <artifactId>serverless-maven-plugin</artifactId>
@@ -114,7 +131,7 @@ See the [OpenWhisk Sample](../maven-plugin-sample/src/main/java/io/nanoservices/
 If you want to specify the OpenWhisk OW_APIHOST and OW_AUTH values directly in the pom you can do so using the providerConfig
 configuration element:
 
-```
+```xml
 <plugin>
     <groupId>io.nanoservices</groupId>
     <artifactId>serverless-maven-plugin</artifactId>
@@ -156,7 +173,8 @@ This is a standalone goal for invoking a deployed function - as shown in the exa
 
 Verifies the existence of deployed functions and optionally their return value when invoked. 
 For example adding the following configuration:
-```
+
+```xml
 <build>
     <plugins>
         <plugin>
@@ -209,7 +227,7 @@ plugin will fail that invocation (but not the entire build) and output correspon
 
 You could of course bind verification to the `mvn verify` command with 
 
-```
+```xml
 ...
             <execution>
                 <id>verify</id>
@@ -228,6 +246,7 @@ but you'd have to make sure your functions get deployed before verifying
 
 If anyone actually finds this useful or promising then future functionality could be to 
 * support more providers
+* support more serverless commands/arguments/properties
 * provide an abstraction layer that enables the exact same java code to work on all providers
 * <whatever you come up with!>
 
