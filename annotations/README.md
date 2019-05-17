@@ -11,7 +11,7 @@ Add to your build dependencies with
 <dependency>
     <groupId>io.nanoservices</groupId>
     <artifactId>serverless-annotations</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-alpha-1</version>
 </dependency>
 ```
         
